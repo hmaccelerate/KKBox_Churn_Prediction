@@ -5,7 +5,7 @@ import play.Play
 import play.api.mvc._
 import scala.io
 import models.Customer
-
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -23,6 +23,14 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   def index = Action {
     Ok(views.html.index("Churn Prediction",read_result_csv(50)))
   }
+
+  def downloadResult =Action{
+    Ok.sendFile(
+      content = new java.io.File(Play.application().path().toString+"/public/churn_data/result.csv"),
+      inline = true)
+  }
+
+
 
 
   def read_result_csv(number_result:Int):List[Customer]={
