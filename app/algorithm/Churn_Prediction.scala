@@ -69,34 +69,10 @@ val regv_indexer = new StringIndexer().setInputCol("registered_via").setOutputCo
     // 2.Transations Part
     // build the trans_count feature
     val trans_count = transactions.groupBy("msno").count()
-
-    // build the is_discount feature
-    def is_discount(plan_list_price: Int, actual_pay:Int):Int ={
-      if (plan_list_price>actual_pay&&actual_pay!=0)
-        return 1
-      else
-        return 0
-    }
-
-    // build the autorenew_&_not_cancel feature: the user is using autorenew and is not a cancelded user
-    def is_autorenew_n_cancel(is_auto_renew:Int,is_cancel:Int):Int={
-      if(is_auto_renew==1&&is_cancel==0)
-        return 1
-      else
-        return 0
-    }
-
-    // build the notAutorenew&Cancel feature: the user is not using autorenew and is a cancelded user
-    def is_n_autorenew_cancel(is_auto_renew:Int,is_cancel:Int):Int={
-      if(is_auto_renew==0&&is_cancel==1)
-        return 1
-      else
-        return 0
-    }
-
-    val new_df =transactions.map(x=> (x(0).toString,is_discount(x(3).toString.toInt,x(4).toString.toInt)
-      ,is_autorenew_n_cancel(x(5).toString.toInt,x(8).toString.toInt)
-      ,is_n_autorenew_cancel(x(5).toString.toInt,x(8).toString.toInt) )).toDF("msno","is_discount",
+    val churnUtil =new ChurnUtil()
+    val new_df =transactions.map(x=> (x(0).toString,churnUtil.is_discount(x(3).toString.toInt,x(4).toString.toInt)
+      ,churnUtil.is_autorenew_n_cancel(x(5).toString.toInt,x(8).toString.toInt)
+      ,churnUtil.is_n_autorenew_cancel(x(5).toString.toInt,x(8).toString.toInt) )).toDF("msno","is_discount",
       "is_autorenew_n_cancel","is_n_autorenew_cancel")
 
       val join_all = transactions.join(new_df,"msno")
