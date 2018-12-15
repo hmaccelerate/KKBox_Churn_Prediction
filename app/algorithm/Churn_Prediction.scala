@@ -15,6 +15,7 @@ import org.apache.spark.ml.classification.RandomForestClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
+import algorithm.ChurnUtil
 
 object Churn_Prediction {
   def main(args: Array[String]) {

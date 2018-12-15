@@ -19,7 +19,6 @@
 - [References](#references)
 ***
 </br></br></br>
-</br></br></br>
 
 
 ## Planning Presentation Requirement
