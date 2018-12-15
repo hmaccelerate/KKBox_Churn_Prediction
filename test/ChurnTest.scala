@@ -1,7 +1,7 @@
 package test
 
 /**
-  * Created by hmaccelerate on 2018/12/14.
+  * Created by hmaccelerate on 2018/12/11.
   */
 import org.scalatest._
 import algorithm.ChurnUtil
