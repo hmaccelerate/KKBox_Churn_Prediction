@@ -5,6 +5,7 @@ import play.Play
 import play.api.mvc._
 import scala.io
 import models.Customer
+import algorithm.ChurnUtil
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
@@ -21,7 +22,9 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * a path of `/`.
    */
   def index = Action {
-    Ok(views.html.index("Churn Prediction",read_result_csv(50)))
+    val c_Util =new ChurnUtil()
+    val csv_path =Play.application().path().toString+"/public/churn_data/result.csv"
+    Ok(views.html.index("Churn Prediction",c_Util.read_result_csv(50,csv_path)))
   }
 
   def downloadResult =Action{
@@ -30,21 +33,5 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       inline = true)
   }
 
-
-
-
-  def read_result_csv(number_result:Int):List[Customer]={
-    val bufferedSource = io.Source.fromFile(Play.application().path().toString+"/public/churn_data/result.csv")
-    val buf = scala.collection.mutable.ListBuffer.empty[Customer]
-    try{
-      for (line <- bufferedSource.getLines.take(number_result)) {
-        val cols = line.split(",").map(_.trim)
-        buf +=Customer(cols(0),cols(1),cols(8),cols(9),cols(13),cols(14),cols(25))
-      }
-    }catch {
-      case e:Exception=> print(e)
-    }
-     buf.toList
-  }
 
 }

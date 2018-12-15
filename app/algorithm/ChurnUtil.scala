@@ -1,7 +1,12 @@
 package algorithm
 
+
+import play.Play
+import scala.io
+import models.Customer
+
 /**
-  * Created by hmaccelerate on 2018/12/14.
+  * Created by hmaccelerate on 2018/12/1.
   */
 class ChurnUtil {
 
@@ -28,5 +33,19 @@ class ChurnUtil {
       return 1
     else
       return 0
+  }
+
+  def read_result_csv(number_result:Int,path:String):List[Customer]={
+    val bufferedSource = io.Source.fromFile(path)
+    val buf = scala.collection.mutable.ListBuffer.empty[Customer]
+    try{
+      for (line <- bufferedSource.getLines.take(number_result)) {
+        val cols = line.split(",").map(_.trim)
+        buf +=Customer(cols(0),cols(1),cols(8),cols(9),cols(13),cols(14),cols(25))
+      }
+    }catch {
+      case e:Exception=> print(e)
+    }
+    buf.toList
   }
 }

@@ -5,6 +5,7 @@ package test
   */
 import org.scalatest._
 import algorithm.ChurnUtil
+import models.Customer
 class ChurnTest extends FlatSpec with Matchers {
 
   "is_discount" should "return 0 and 1" in {
@@ -32,5 +33,12 @@ class ChurnTest extends FlatSpec with Matchers {
 
   }
 
+  "read_result_csv" should "return no empty list" in {
+
+    val cUtil = new ChurnUtil()
+    val testlist :List[Customer] = cUtil.read_result_csv(50,"D:\\ScalaWorkSpaces\\KKBox_Churn_Prediction\\public\\churn_data\\result.csv")
+    testlist.isEmpty should be (false)
+
+  }
 
 }

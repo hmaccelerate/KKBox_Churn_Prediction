@@ -3,9 +3,7 @@ package algorithm
 /**
   * Created by hmaccelerate on 2018/12/1.
   */
-/**
-  * Created by hmaccelerate on 2018/12/1.
-  */
+
 
 import org.apache.spark.ml.feature.StringIndexer
 import org.apache.spark.ml.feature.VectorAssembler
